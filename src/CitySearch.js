@@ -19,7 +19,7 @@ export default class CitySearch extends Component {
 
   handleItemClicked = (suggestion) => {
     this.setState({
-      query: suggestion
+      query: suggestion,
     });
   };
 
@@ -37,7 +37,9 @@ export default class CitySearch extends Component {
             <li
               key={suggestion}
               onClick={() => this.handleItemClicked(suggestion)}
-            >{suggestion}</li>
+            >
+              {suggestion}
+            </li>
           ))}
           <li key="all">
             <b>See all cities</b>
