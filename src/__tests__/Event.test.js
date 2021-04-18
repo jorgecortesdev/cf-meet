@@ -17,19 +17,19 @@ describe("<Event /> component", () => {
   });
 
   it("renders the event summary", () => {
-    let eventSummary = EventWrapper.find(".event--summary");
+    let eventSummary = EventWrapper.find(".event__Overview--name");
     expect(eventSummary).toHaveLength(1);
     expect(eventSummary.text()).toEqual(eventData.summary);
   });
 
   it("renders the event date", () => {
-    let eventStart = EventWrapper.find(".event--start");
+    let eventStart = EventWrapper.find(".event__Overview--localDate");
     expect(eventStart).toHaveLength(1);
     expect(eventStart.text()).toEqual(eventData.start.dateTime);
   });
 
   it("renders the event location", () => {
-    let eventLocation = EventWrapper.find(".event--location");
+    let eventLocation = EventWrapper.find(".event__Overview--venue");
     expect(eventLocation).toHaveLength(1);
     expect(eventLocation.text()).toEqual(
       `@${eventData.summary} | ${eventData.location}`
@@ -37,35 +37,32 @@ describe("<Event /> component", () => {
   });
 
   it("renders the details button", () => {
-    let eventShowDetails = EventWrapper.find(".event--show-details");
+    let eventShowDetails = EventWrapper.find(".details-btn");
     expect(eventShowDetails).toHaveLength(1);
-    expect(eventShowDetails.text()).toEqual("Show details");
+    expect(eventShowDetails.text()).toEqual("show details");
   });
 
-  it("includes the event details", () => {
-    let eventDetails = EventWrapper.find(".event--details");
-    expect(eventDetails).toHaveLength(1);
-    expect(eventDetails.find("p:last-child").text()).toEqual(
-      eventData.description
-    );
-    expect(eventDetails.hasClass("show")).toBe(false);
+  it("does not include the event details by default", () => {
+    let eventDetails = EventWrapper.find(".event__Details");
+    expect(eventDetails).toHaveLength(0);
   });
 
   it("renders event details when user clicks on details button", () => {
     EventWrapper.setState({ showDetails: false });
     const showDetails = EventWrapper.state("showDetails");
-    EventWrapper.find(".event--show-details").simulate("click");
+    EventWrapper.find(".details-btn").simulate("click");
     expect(EventWrapper.state("showDetails")).toEqual(!showDetails);
-    expect(EventWrapper.find(".event--details").hasClass("show")).toBe(true);
+    expect(EventWrapper.find(".event__Details")).toHaveLength(1);
+    expect(EventWrapper.find(".details-btn").text()).toBe("hide details");
   });
 
   it("hides event details if are rendered when user clicks on details button", () => {
     EventWrapper.setState({ showDetails: true });
 
-    expect(EventWrapper.find(".event--details").hasClass("show")).toBe(true);
+    expect(EventWrapper.find(".event__Details")).toHaveLength(1);
 
-    EventWrapper.find(".event--show-details").simulate("click");
+    EventWrapper.find(".details-btn").simulate("click");
 
-    expect(EventWrapper.find(".event--details").hasClass("show")).toBe(false);
+    expect(EventWrapper.find(".event__Details")).toHaveLength(0);
   });
 });

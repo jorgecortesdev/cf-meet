@@ -63,8 +63,10 @@ describe("<App /> integration", () => {
 
   it('get list of all events when user selects "See all cities"', async () => {
     const AppWrapper = mount(<App />);
-    const suggestionItems = AppWrapper.find(CitySearch).find(".suggestions li");
-    await suggestionItems.at(suggestionItems.length - 1).simulate("click");
+    const CitySearchWrapper = AppWrapper.find(CitySearch);
+    CitySearchWrapper.setState({ showSuggestions: true });
+    const suggestionItem = CitySearchWrapper.find(".suggestions li");
+    await suggestionItem.simulate("click");
     const allEvents = await getEvents();
     expect(AppWrapper.state("events")).toEqual(allEvents);
     AppWrapper.unmount();

@@ -4,10 +4,14 @@ export default class CitySearch extends Component {
   state = {
     query: "",
     suggestions: [],
+    showSuggestions: false
   };
 
   handleInputChanged = (event) => {
     const value = event.target.value;
+    this.setState({
+      showSuggestions: true
+    });
     const suggestions = this.props.locations.filter((location) => {
       return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
     });
@@ -20,22 +24,26 @@ export default class CitySearch extends Component {
   handleItemClicked = (suggestion) => {
     this.setState({
       query: suggestion,
+      suggestions: [],
+      showSuggestions: false,
     });
 
     this.props.updateEvents(suggestion);
   };
 
   render() {
+    const { query, showSuggestions, suggestions } = this.state;
     return (
       <div className="CitySearch">
         <input
           type="text"
           className="city"
-          value={this.state.query}
+          value={query}
           onChange={this.handleInputChanged}
+          onFocus={() => { this.setState({ showSuggestions: true })}}
         />
-        <ul className="suggestions">
-          {this.state.suggestions.map((suggestion) => (
+        <ul className="suggestions" style={showSuggestions ? {} : { display: 'none' }}>
+          {suggestions.map((suggestion) => (
             <li
               key={suggestion}
               onClick={() => this.handleItemClicked(suggestion)}

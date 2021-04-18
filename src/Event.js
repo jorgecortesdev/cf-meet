@@ -17,24 +17,28 @@ class Event extends Component {
 
     return (
       <div className="event">
-        <h1 className="event--summary">{event.summary}</h1>
-        <div className="event--start">{event.start.dateTime}</div>
-        <div className="event--location">{`@${event.summary} | ${event.location}`}</div>
-        <button
-          type="button"
-          className="event--show-details"
-          onClick={this.toggleDetails}
-        >
-          Show details
-        </button>
-        <div className={`event--details ${showDetails ? "show" : ""}`}>
-          <h3>About event</h3>
-          <p>
-            <a href={event.htmlLink} target="_blank" rel="noreferrer">
-              See details on Google Calendar
-            </a>
-          </p>
-          <p>{event.description}</p>
+        <div className="event__Overview">
+          <h2 className="event__Overview--name">{event.summary}</h2>
+          <p className="event__Overview--localDate">{event.start.dateTime}</p>
+          <p className="event__Overview--venue">{`@${event.summary} | ${event.location}`}</p>
+          <button
+            type="button"
+            className="details-btn"
+            onClick={this.toggleDetails}
+          >
+            {showDetails ? "hide details" : "show details"}
+          </button>
+          {showDetails && (
+            <div className="event__Details">
+              <h3>About event</h3>
+              <h4>
+                <a href={event.htmlLink} target="_blank" rel="noopener noreferrer">
+                  See details on Google Calendar
+                </a>
+              </h4>
+              <p className="event__Details--description">{event.description}</p>
+            </div>
+          )}
         </div>
       </div>
     );
