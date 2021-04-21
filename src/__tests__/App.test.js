@@ -3,6 +3,7 @@ import { shallow, mount } from "enzyme";
 
 import App from "../App";
 import EventList from "../EventList";
+import Event from "../Event";
 import CitySearch from "../CitySearch";
 import NumberOfEvents from "../NumberOfEvents";
 import { extractLocations, getEvents } from "../api";
@@ -70,5 +71,30 @@ describe("<App /> integration", () => {
     const allEvents = await getEvents();
     expect(AppWrapper.state("events")).toEqual(allEvents);
     AppWrapper.unmount();
-  })
+  });
+
+  it('passes the "number of events" as prop to NumberOfEvents"', () => {
+    const AppWrapper = mount(<App />);
+    const AppNumberOfEventsState = AppWrapper.state("numberOfEvents");
+    expect(AppNumberOfEventsState).not.toEqual(undefined);
+    expect(AppWrapper.find(NumberOfEvents).props().numberOfEvents).toEqual(AppNumberOfEventsState);
+    AppWrapper.unmount();
+  });
+
+  it('changes the number of events on App when the number changes in NumberOfEvents', async () => {
+    const AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const eventObject = { target: { value: 1 } };
+    await NumberOfEventsWrapper.find(".numberOfEvents__input").simulate("change", eventObject);
+    expect(AppWrapper.state("numberOfEvents")).toEqual(1);
+    AppWrapper.unmount();
+  });
+
+  it("renders the number of events from numberOfEvents in state", async () => {
+    const AppWrapper = mount(<App />);
+    AppWrapper.setState({ numberOfEvents: 1 });
+    await AppWrapper.instance().updateEvents('all');
+    expect(AppWrapper.state("events")).toHaveLength(1);
+    AppWrapper.unmount();
+  });
 });
