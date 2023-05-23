@@ -1,12 +1,10 @@
 service: auth-server
-frameworkVersion: '2'
 
 provider:
   name: aws
   runtime: nodejs12.x
   region: us-west-1
-  timeout: 30 # in seconds
-  lambdaHashingVersion: 20201221
+  timeout: 60 # in seconds
   environment:
     CLIENT_ID: ${file(config.json):CLIENT_ID}
     CLIENT_SECRET: ${file(config.json):CLIENT_SECRET}
